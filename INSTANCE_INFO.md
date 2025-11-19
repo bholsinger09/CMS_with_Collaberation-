@@ -1,6 +1,7 @@
 # AWS Instance Information
 
 **Instance Public IP**: `18.215.152.2`  
+**Domain**: `cmscallabration.duckdns.org`  
 **Created**: November 19, 2025  
 **Key Pair**: `cms-collaboration-key`
 
@@ -16,10 +17,14 @@ ssh -i ~/.ssh/cms-collaboration-key.pem ubuntu@18.215.152.2
 
 ## 🌐 Access URLs
 
-- **Frontend**: http://18.215.152.2:3000
-- **Backend API**: http://18.215.152.2:5000
-- **Swagger Docs**: http://18.215.152.2:5000/swagger
-- **PHP Server**: http://18.215.152.2:8080
+- **Frontend**: http://cmscallabration.duckdns.org:3000
+- **Backend API**: http://cmscallabration.duckdns.org:5000
+- **Swagger Docs**: http://cmscallabration.duckdns.org:5000/swagger
+- **PHP Server**: http://cmscallabration.duckdns.org:8080
+
+**Alternative (Direct IP)**:
+- Frontend: http://18.215.152.2:3000
+- Backend: http://18.215.152.2:5000
 
 ---
 
@@ -101,17 +106,17 @@ docker ps
 
 ### 2. Test Frontend
 ```bash
-curl http://18.215.152.2:3000
+curl http://cmscallabration.duckdns.org:3000
 ```
 
 ### 3. Test Backend API
 ```bash
-curl http://18.215.152.2:5000/api/health
+curl http://cmscallabration.duckdns.org:5000/api/health
 ```
 
 ### 4. Test PHP Server
 ```bash
-curl http://18.215.152.2:8080/api/content/published
+curl http://cmscallabration.duckdns.org:8080/api/content/published
 ```
 
 ---
@@ -209,7 +214,7 @@ docker-compose up -d --build
 2. ✅ Install Docker & dependencies
 3. ✅ Clone repository
 4. ✅ Start services with Docker Compose
-5. ⏳ Access http://18.215.152.2:3000
+5. ⏳ Access http://cmscallabration.duckdns.org:3000
 6. ⏳ Login and change default password
-7. ⏳ Configure domain (optional)
-8. ⏳ Setup SSL certificate (recommended)
+7. ✅ Domain configured: cmscallabration.duckdns.org
+8. ⏳ Setup SSL certificate (recommended for HTTPS)
