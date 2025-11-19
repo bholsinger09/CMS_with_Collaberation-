@@ -1,0 +1,31 @@
+{
+  "name": "cms-collaboration-platform",
+  "version": "1.0.0",
+  "description": "Real-time CMS Collaboration Platform",
+  "scripts": {
+    "setup": "chmod +x setup.sh && ./setup.sh",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && dotnet run",
+    "dev:php": "cd php-server && composer start",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && dotnet build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bholsinger09/CMS_with_Collaberation-"
+  },
+  "keywords": [
+    "cms",
+    "collaboration",
+    "real-time",
+    "react",
+    "dotnet",
+    "php"
+  ],
+  "author": "",
+  "license": "MIT"
+}

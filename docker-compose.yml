@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: cms_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cms_collaboration
+      MYSQL_USER: cmsuser
+      MYSQL_PASSWORD: cmspassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cms_network
+
+  php-server:
+    build:
+      context: ./php-server
+      dockerfile: Dockerfile
+    container_name: cms_php_server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php-server:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: cms_collaboration
+      DB_USERNAME: cmsuser
+      DB_PASSWORD: cmspassword
+    networks:
+      - cms_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cms_dotnet_backend
+    ports:
+      - "5000:80"
+      - "5001:443"
+    depends_on:
+      - mysql
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=mysql;Database=cms_collaboration;User=cmsuser;Password=cmspassword;"
+    networks:
+      - cms_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cms_react_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_PHP_URL=http://localhost:8080
+      - REACT_APP_WS_URL=ws://localhost:5000/hub
+    depends_on:
+      - backend
+      - php-server
+    networks:
+      - cms_network
+
+networks:
+  cms_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
