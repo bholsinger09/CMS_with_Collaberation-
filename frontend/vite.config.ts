@@ -14,8 +14,10 @@ export default defineConfig({
         port: 3000,
         strictPort: true,
         hmr: {
-            clientPort: 3000,
-            host: 'localhost'
+            protocol: 'ws',
+            host: 'cmscallabration.duckdns.org',
+            port: 3000,
+            clientPort: 3000
         },
         watch: {
             usePolling: true
