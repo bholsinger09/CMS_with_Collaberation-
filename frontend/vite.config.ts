@@ -20,6 +20,11 @@ export default defineConfig({
         watch: {
             usePolling: true
         },
+        allowedHosts: [
+            'localhost',
+            'cmscallabration.duckdns.org',
+            '.duckdns.org'
+        ],
         proxy: {
             '/api': {
                 target: 'http://backend:8080',
