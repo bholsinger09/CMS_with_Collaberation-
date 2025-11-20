@@ -64,7 +64,11 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+        policy.WithOrigins(
+                "http://localhost:3000", 
+                "http://localhost:5173",
+                "http://cmscallabration.duckdns.org:3000",
+                "http://cmscallabration.duckdns.org")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
