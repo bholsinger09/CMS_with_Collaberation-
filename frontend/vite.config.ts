@@ -12,13 +12,21 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 3000,
+        strictPort: true,
+        hmr: {
+            clientPort: 3000,
+            host: 'localhost'
+        },
+        watch: {
+            usePolling: true
+        },
         proxy: {
             '/api': {
-                target: 'http://backend:5000',
+                target: 'http://backend:80',
                 changeOrigin: true,
             },
             '/php-api': {
-                target: 'http://php-server:8080',
+                target: 'http://php-server:80',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/php-api/, '/api'),
             },
