@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useCollaborationStore } from '../store/collaborationStore'
 import { useAuthStore } from '../store/authStore'
-import axios from 'axios'
+import api from '../lib/axios'
 
 export default function Editor() {
     const { id } = useParams()
@@ -36,7 +36,7 @@ export default function Editor() {
 
     const loadDocument = async (documentId: string) => {
         try {
-            const response = await axios.get(`/api/content/${documentId}`)
+            const response = await api.get(`/api/content/${documentId}`)
             setTitle(response.data.title)
             setContent(response.data.content)
             setStatus(response.data.status)
@@ -54,13 +54,13 @@ export default function Editor() {
         setIsSaving(true)
         try {
             if (id) {
-                await axios.put(`/api/content/${id}`, {
+                await api.put(`/api/content/${id}`, {
                     title,
                     content,
                     status,
                 })
             } else {
-                const response = await axios.post('/api/content', {
+                const response = await api.post('/api/content', {
                     title,
                     content,
                     status,
@@ -78,7 +78,7 @@ export default function Editor() {
         setStatus('published')
         setIsSaving(true)
         try {
-            await axios.put(`/api/content/${id}/publish`, {
+            await api.put(`/api/content/${id}/publish`, {
                 title,
                 content,
             })

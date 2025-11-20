@@ -22,7 +22,7 @@ export default defineConfig({
         },
         proxy: {
             '/api': {
-                target: 'http://backend:80',
+                target: 'http://backend:8080',
                 changeOrigin: true,
             },
             '/php-api': {

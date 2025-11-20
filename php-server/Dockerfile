@@ -26,6 +26,10 @@ COPY . .
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader || composer update --no-dev --optimize-autoloader
 
+# Configure Apache DocumentRoot to point to public directory
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|<Directory /var/www/>|<Directory /var/www/html/public/>|g' /etc/apache2/apache2.conf
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 755 /var/www/html

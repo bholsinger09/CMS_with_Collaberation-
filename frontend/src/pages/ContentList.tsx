@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import api from '../lib/axios'
 import { format } from 'date-fns'
 
 interface Content {
@@ -16,7 +16,7 @@ export default function ContentList() {
     const { data: contents, isLoading } = useQuery<Content[]>({
         queryKey: ['contents'],
         queryFn: async () => {
-            const response = await axios.get('/api/content')
+            const response = await api.get('/api/content')
             return response.data
         },
     })

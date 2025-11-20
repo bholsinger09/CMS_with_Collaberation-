@@ -128,10 +128,11 @@ CREATE TABLE IF NOT EXISTS ActivityLog (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insert sample admin user
--- Password: admin123 (hashed with SHA256)
+-- Password: admin123 (hashed with SHA256 Base64)
+-- Password: editor123 (hashed with SHA256 Base64)
 INSERT INTO Users (Id, Username, Email, PasswordHash, Role, CreatedAt) VALUES
-(UUID(), 'admin', 'admin@cms.local', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 'Admin', NOW()),
-(UUID(), 'editor', 'editor@cms.local', 'XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=', 'Editor', NOW())
+(UUID(), 'admin', 'admin@cms.local', 'JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=', 'Admin', NOW()),
+(UUID(), 'editor', 'editor@cms.local', '715aH7lQVeDlbMz5ikHnhKEywU5/bhuiRDAvDnKym68=', 'Editor', NOW())
 ON DUPLICATE KEY UPDATE Email=Email;
 
 -- Insert sample tags

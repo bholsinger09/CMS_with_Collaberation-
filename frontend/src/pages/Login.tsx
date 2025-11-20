@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
-import axios from 'axios'
+import api from '../lib/axios'
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -17,7 +17,7 @@ export default function Login() {
         setIsLoading(true)
 
         try {
-            const response = await axios.post('/api/auth/login', {
+            const response = await api.post('/api/auth/login', {
                 email,
                 password,
             })
@@ -91,6 +91,18 @@ export default function Login() {
                         >
                             {isLoading ? 'Signing in...' : 'Sign in'}
                         </button>
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-sm text-gray-600">
+                            Don't have an account?{' '}
+                            <Link
+                                to="/register"
+                                className="font-medium text-primary-600 hover:text-primary-500"
+                            >
+                                Create an account
+                            </Link>
+                        </p>
                     </div>
                 </form>
             </div>
