@@ -63,9 +63,9 @@ services:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - REACT_APP_API_URL=http://localhost:5000
-      - REACT_APP_PHP_URL=http://localhost:8080
-      - REACT_APP_WS_URL=ws://localhost:5000/hub
+      - VITE_API_URL=http://cmscallabration.duckdns.org:5000
+      - VITE_PHP_URL=http://cmscallabration.duckdns.org:8080
+      - VITE_WS_URL=ws://cmscallabration.duckdns.org:5000
     depends_on:
       - backend
       - php-server
