@@ -9,7 +9,7 @@ cd /home/ec2-user/CMS_Callaberation
 
 # Stop all containers
 echo "Stopping all containers..."
-docker-compose down -v 2>/dev/null || true
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v 2>/dev/null || true
 
 # Remove MySQL volume to ensure fresh initialization
 echo "Removing MySQL volume..."
@@ -21,11 +21,11 @@ git pull origin main
 
 # Build images
 echo "Building Docker images..."
-docker-compose build --no-cache
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
 
 # Start MySQL first
 echo "Starting MySQL..."
-docker-compose up -d mysql
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d mysql
 
 # Wait for MySQL to be fully ready
 echo "Waiting 50 seconds for MySQL to initialize..."
@@ -33,15 +33,15 @@ sleep 50
 
 # Verify MySQL is accessible
 echo "Verifying MySQL connection..."
-docker-compose exec -T mysql mysql -ucmsuser -pcmspassword -e "SELECT 'MySQL is ready!' as status;" || {
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec -T mysql mysql -ucmsuser -pcmspassword -e "SELECT 'MySQL is ready!' as status;" || {
     echo "ERROR: MySQL is not accessible. Checking logs..."
-    docker-compose logs mysql
+    docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs mysql
     exit 1
 }
 
 # Start remaining services
 echo "Starting backend, PHP server, and frontend..."
-docker-compose up -d backend php-server frontend
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d backend php-server frontend
 
 # Wait for services to start
 echo "Waiting for services to start..."
@@ -49,18 +49,18 @@ sleep 10
 
 # Install PHP dependencies
 echo "Installing PHP dependencies..."
-docker-compose exec -T php-server composer install --no-dev --optimize-autoloader || {
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec -T php-server composer install --no-dev --optimize-autoloader || {
     echo "WARNING: Could not install PHP dependencies, but continuing..."
 }
 
 # Show status
 echo ""
 echo "=== Container Status ==="
-docker-compose ps
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps
 
 echo ""
 echo "=== Backend Logs (last 20 lines) ==="
-docker-compose logs --tail=20 backend
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs --tail=20 backend
 
 echo ""
 echo "=== Deployment Complete ==="
