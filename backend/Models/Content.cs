@@ -11,7 +11,12 @@ public class Content
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public DateTime? PublishedAt { get; set; }
+    public DateTime? ScheduledPublishDate { get; set; }
     
+    public Guid? CategoryId { get; set; }
+    public Category? Category { get; set; }
+    
+    public ICollection<ContentTag> ContentTags { get; set; } = new List<ContentTag>();
     public ICollection<ContentVersion> Versions { get; set; } = new List<ContentVersion>();
     public ICollection<CollaborationSession> CollaborationSessions { get; set; } = new List<CollaborationSession>();
 }

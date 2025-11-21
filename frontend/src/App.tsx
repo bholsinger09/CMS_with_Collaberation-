@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Editor from './pages/Editor'
 import ContentList from './pages/ContentList'
+import MediaLibrary from './pages/MediaLibrary'
 import Layout from './components/Layout'
 
 function App() {
@@ -45,6 +46,18 @@ function App() {
                         isAuthenticated ? (
                             <Layout>
                                 <Editor />
+                            </Layout>
+                        ) : (
+                            <Navigate to="/login" />
+                        )
+                    }
+                />
+                <Route
+                    path="/media"
+                    element={
+                        isAuthenticated ? (
+                            <Layout>
+                                <MediaLibrary />
                             </Layout>
                         ) : (
                             <Navigate to="/login" />

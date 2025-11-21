@@ -168,7 +168,106 @@ public class ContentController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}/schedule")]
+    public async Task<IActionResult> Schedule(Guid id, [FromBody] ScheduleContentRequest request)
+    {
+        var content = await _contentService.GetContentByIdAsync(id);
+        if (content == null)
+        {
+            return NotFound();
+        }
+
+        content.ScheduledPublishDate = request.ScheduledPublishDate;
+        content.UpdatedAt = DateTime.UtcNow;
+
+        await _contentService.UpdateContentAsync(id, content);
+
+        return Ok(new
+        {
+            id = content.Id,
+            scheduledPublishDate = content.ScheduledPublishDate
+        });
+    }
+
+    [HttpGet("{id}/preview")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Preview(Guid id, [FromQuery] string? token)
+    {
+        // Simple preview - in production, you'd want token-based authentication
+        var content = await _contentService.GetContentByIdAsync(id);
+        
+        if (content == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new
+        {
+            id = content.Id,
+            title = content.Title,
+            content = content.Body,
+            status = content.Status,
+            author = content.Author.Username,
+            updatedAt = content.UpdatedAt
+        });
+    }
+
+    [HttpPost("bulk/delete")]
+    public async Task<IActionResult> BulkDelete([FromBody] BulkOperationRequest request)
+    {
+        var results = new List<object>();
+
+        foreach (var id in request.Ids)
+        {
+            var success = await _contentService.DeleteContentAsync(id);
+            results.Add(new { id, success });
+        }
+
+        return Ok(new { results });
+    }
+
+    [HttpPost("bulk/publish")]
+    public async Task<IActionResult> BulkPublish([FromBody] BulkOperationRequest request)
+    {
+        var results = new List<object>();
+
+        foreach (var id in request.Ids)
+        {
+            var content = await _contentService.PublishContentAsync(id);
+            results.Add(new { id, success = content != null });
+        }
+
+        return Ok(new { results });
+    }
+
+    [HttpPost("bulk/status")]
+    public async Task<IActionResult> BulkUpdateStatus([FromBody] BulkStatusRequest request)
+    {
+        var results = new List<object>();
+
+        foreach (var id in request.Ids)
+        {
+            var content = await _contentService.GetContentByIdAsync(id);
+            if (content != null)
+            {
+                content.Status = request.Status;
+                content.UpdatedAt = DateTime.UtcNow;
+                await _contentService.UpdateContentAsync(id, content);
+                results.Add(new { id, success = true });
+            }
+            else
+            {
+                results.Add(new { id, success = false });
+            }
+        }
+
+        return Ok(new { results });
+    }
 }
 
 public record CreateContentRequest(string Title, string Content);
 public record UpdateContentRequest(string Title, string Content, string? Status);
+public record ScheduleContentRequest(DateTime ScheduledPublishDate);
+public record BulkOperationRequest(List<Guid> Ids);
+public record BulkStatusRequest(List<Guid> Ids, string Status);
