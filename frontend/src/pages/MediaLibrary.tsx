@@ -207,7 +207,44 @@ export default function MediaLibrary() {
                                     <div className="mt-3 flex space-x-2">
                                         <button
                                             onClick={() => {
-                                                navigator.clipboard.writeText(`${import.meta.env.VITE_API_URL}${item.filePath}`)
+                                                const url = `${import.meta.env.VITE_API_URL}${item.filePath}`;
+                                                
+                                                // Try modern clipboard API first
+                                                if (navigator.clipboard && navigator.clipboard.writeText) {
+                                                    navigator.clipboard.writeText(url)
+                                                        .then(() => alert('URL copied to clipboard!'))
+                                                        .catch(() => {
+                                                            // Fallback to legacy method
+                                                            const textArea = document.createElement('textarea');
+                                                            textArea.value = url;
+                                                            textArea.style.position = 'fixed';
+                                                            textArea.style.left = '-999999px';
+                                                            document.body.appendChild(textArea);
+                                                            textArea.select();
+                                                            try {
+                                                                document.execCommand('copy');
+                                                                alert('URL copied to clipboard!');
+                                                            } catch (err) {
+                                                                alert('Failed to copy. URL: ' + url);
+                                                            }
+                                                            document.body.removeChild(textArea);
+                                                        });
+                                                } else {
+                                                    // Use fallback for non-HTTPS contexts
+                                                    const textArea = document.createElement('textarea');
+                                                    textArea.value = url;
+                                                    textArea.style.position = 'fixed';
+                                                    textArea.style.left = '-999999px';
+                                                    document.body.appendChild(textArea);
+                                                    textArea.select();
+                                                    try {
+                                                        document.execCommand('copy');
+                                                        alert('URL copied to clipboard!');
+                                                    } catch (err) {
+                                                        alert('Failed to copy. URL: ' + url);
+                                                    }
+                                                    document.body.removeChild(textArea);
+                                                }
                                             }}
                                             className="flex-1 text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
                                         >
