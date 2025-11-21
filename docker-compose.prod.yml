@@ -6,7 +6,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_HTTP_PORTS: "8080"
       ConnectionStrings__DefaultConnection: "Server=mysql;Database=cms_collaboration;User=cmsuser;Password=cmspassword;"
-  
+
   frontend:
     environment:
       - VITE_API_URL=http://cmscallabration.duckdns.org:5000

@@ -83,10 +83,10 @@ export default function ContentList() {
                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                                 <span
                                                     className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${content.status === 'published'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : content.status === 'draft'
-                                                                ? 'bg-yellow-100 text-yellow-800'
-                                                                : 'bg-gray-100 text-gray-800'
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : content.status === 'draft'
+                                                            ? 'bg-yellow-100 text-yellow-800'
+                                                            : 'bg-gray-100 text-gray-800'
                                                         }`}
                                                 >
                                                     {content.status}

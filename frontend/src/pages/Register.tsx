@@ -43,7 +43,7 @@ export default function Register() {
         } catch (err: any) {
             setError(
                 err.response?.data?.message ||
-                    'Registration failed. Email or username may already be in use.'
+                'Registration failed. Email or username may already be in use.'
             )
         } finally {
             setIsLoading(false)
