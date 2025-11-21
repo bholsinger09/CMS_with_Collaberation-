@@ -20,29 +20,46 @@ public class CollaborationHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, documentId);
 
-        var session = new CollaborationSession
+        // Only save session if documentId is a valid GUID (existing document)
+        if (Guid.TryParse(documentId, out var contentGuid) && Guid.TryParse(userId, out var userGuid))
         {
-            Id = Guid.NewGuid(),
-            ContentId = Guid.Parse(documentId),
-            UserId = Guid.Parse(userId),
-            ConnectionId = Context.ConnectionId,
-            JoinedAt = DateTime.UtcNow,
-            IsActive = true
-        };
+            var session = new CollaborationSession
+            {
+                Id = Guid.NewGuid(),
+                ContentId = contentGuid,
+                UserId = userGuid,
+                ConnectionId = Context.ConnectionId,
+                JoinedAt = DateTime.UtcNow,
+                IsActive = true
+            };
 
-        _context.CollaborationSessions.Add(session);
-        await _context.SaveChangesAsync();
+            _context.CollaborationSessions.Add(session);
+            await _context.SaveChangesAsync();
 
-        var user = await _context.Users.FindAsync(Guid.Parse(userId));
-        var activeUser = new
+            var user = await _context.Users.FindAsync(userGuid);
+            var activeUser = new
+            {
+                Id = userId,
+                Username = user?.Username ?? "Unknown",
+                Color = GenerateUserColor(userId)
+            };
+
+            await Clients.Group(documentId).SendAsync("UserJoined", activeUser);
+            _logger.LogInformation($"User {userId} joined document {documentId}");
+        }
+        else
         {
-            Id = userId,
-            Username = user?.Username ?? "Unknown",
-            Color = GenerateUserColor(userId)
-        };
+            // For temporary/new documents, just join the group without saving to DB
+            var activeUser = new
+            {
+                Id = userId,
+                Username = "User",
+                Color = GenerateUserColor(userId)
+            };
 
-        await Clients.Group(documentId).SendAsync("UserJoined", activeUser);
-        _logger.LogInformation($"User {userId} joined document {documentId}");
+            await Clients.Group(documentId).SendAsync("UserJoined", activeUser);
+            _logger.LogInformation($"User {userId} joined temporary document {documentId}");
+        }
     }
 
     public async Task LeaveDocument(string documentId, string userId)
