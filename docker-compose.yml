@@ -55,14 +55,15 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: cms_react_frontend
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://cmscallabration.duckdns.org:5002
-      - VITE_PHP_URL=http://cmscallabration.duckdns.org:8080
+      - VITE_API_URL=https://cmscallabration.duckdns.org/api
+      - VITE_PHP_URL=https://cmscallabration.duckdns.org:8080
+      - VITE_WS_URL=wss://cmscallabration.duckdns.org/hubs
       - VITE_WS_URL=ws://cmscallabration.duckdns.org:5002
     depends_on:
       - backend
