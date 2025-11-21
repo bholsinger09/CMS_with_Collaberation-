@@ -64,15 +64,26 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:3000", 
-                "http://localhost:5173",
-                "http://3.88.158.94:3000",
-                "http://cmscallabration.duckdns.org:3000",
-                "http://cmscallabration.duckdns.org")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.SetIsOriginAllowed(origin =>
+        {
+            // Allow localhost and local IPs
+            if (origin.StartsWith("http://localhost:") || 
+                origin.StartsWith("http://127.0.0.1:"))
+                return true;
+            
+            // Allow EC2 IP
+            if (origin.StartsWith("http://3.88.158.94:"))
+                return true;
+            
+            // Allow DuckDNS domain
+            if (origin.Contains("cmscallabration.duckdns.org"))
+                return true;
+            
+            return false;
+        })
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 
