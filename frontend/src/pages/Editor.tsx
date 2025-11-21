@@ -22,15 +22,13 @@ export default function Editor() {
         if (id && user) {
             // Load existing document
             loadDocument(id)
-            initConnection(id, user.id)
-        } else if (user) {
-            // New document - create a temporary ID
-            const tempId = `temp-${Date.now()}`
-            initConnection(tempId, user.id)
+            // Note: Real-time collaboration disabled until backend is rebuilt
+            // Uncomment when backend has the CollaborationHub fix deployed
+            // initConnection(id, user.id)
         }
 
         return () => {
-            disconnect()
+            // disconnect()
         }
     }, [id, user])
 
