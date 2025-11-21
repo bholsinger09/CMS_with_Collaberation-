@@ -39,8 +39,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: cms_dotnet_backend
-    ports:
-      - "5002:8080"
+    expose:
+      - "8080"
     depends_on:
       - mysql
     environment:
@@ -55,20 +55,37 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: cms_react_frontend
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_URL=http://3.88.158.94:5002
-      - VITE_PHP_URL=http://3.88.158.94:8080
-      - VITE_WS_URL=ws://3.88.158.94:5002
+      - VITE_API_URL=https://cmscallabration.duckdns.org/api
+      - VITE_PHP_URL=https://cmscallabration.duckdns.org:8080
+      - VITE_WS_URL=wss://cmscallabration.duckdns.org/hubs
     depends_on:
       - backend
       - php-server
     networks:
       - cms_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: cms_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - cms_network
+    restart: unless-stopped
 
 networks:
   cms_network:
