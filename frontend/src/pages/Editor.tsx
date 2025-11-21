@@ -73,13 +73,12 @@ export default function Editor() {
     }
 
     const handlePublish = async () => {
-        setStatus('published')
         setIsSaving(true)
         try {
-            await api.put(`/api/content/${id}/publish`, {
-                title,
-                content,
-            })
+            const response = await api.put(`/api/content/${id}/publish`)
+            setStatus(response.data.status)
+            // Redirect to content list after publishing
+            navigate('/content')
         } catch (error) {
             console.error('Failed to publish document:', error)
         } finally {

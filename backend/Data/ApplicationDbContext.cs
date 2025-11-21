@@ -36,6 +36,7 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Status);
             entity.HasIndex(e => e.CreatedAt);
+            entity.HasIndex(e => e.UpdatedAt);
             
             entity.HasMany(e => e.Versions)
                 .WithOne(e => e.Content)
