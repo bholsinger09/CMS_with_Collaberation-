@@ -10,9 +10,14 @@ export default defineConfig({
         },
     },
     server: {
-        host: true,
+        host: '0.0.0.0',
         port: 3000,
         strictPort: true,
+        allowedHosts: [
+            'cmscallabration.duckdns.org',
+            '3.88.158.94',
+            'localhost'
+        ],
         hmr: {
             protocol: 'ws',
             clientPort: 3000
