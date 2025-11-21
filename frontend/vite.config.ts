@@ -15,18 +15,11 @@ export default defineConfig({
         strictPort: true,
         hmr: {
             protocol: 'ws',
-            host: 'cmscallabration.duckdns.org',
-            port: 3000,
             clientPort: 3000
         },
         watch: {
             usePolling: true
         },
-        allowedHosts: [
-            'localhost',
-            'cmscallabration.duckdns.org',
-            '.duckdns.org'
-        ],
         proxy: {
             '/api': {
                 target: 'http://backend:8080',
