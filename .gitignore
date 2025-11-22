@@ -47,6 +47,9 @@ yarn-error.log*
 # Docker
 *.env.docker
 
+# Setup scripts
+setup-https-simple.sh
+
 # C# specific
 *.suo
 *.user
