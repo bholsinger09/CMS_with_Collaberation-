@@ -41,7 +41,7 @@ export const useCollaborationStore = create<CollaborationState>((set, get) => ({
             }))
         })
 
-        connection.on('ContentChanged', (content: string, userId: string) => {
+        connection.on('ContentChanged', (_content: string, userId: string) => {
             // Handle content update from other users
             console.log('Content changed by', userId)
         })

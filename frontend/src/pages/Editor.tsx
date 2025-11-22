@@ -10,7 +10,7 @@ export default function Editor() {
     const { id } = useParams()
     const navigate = useNavigate()
     const { user } = useAuthStore()
-    const { initConnection, disconnect, activeUsers, sendContentChange } = useCollaborationStore()
+    const { activeUsers, sendContentChange } = useCollaborationStore()
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
