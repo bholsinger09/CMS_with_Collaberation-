@@ -101,6 +101,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+// Serve static files from wwwroot
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
