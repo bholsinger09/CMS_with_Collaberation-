@@ -35,7 +35,7 @@ export default function MediaLibrary() {
         queryFn: async () => {
             const params = new URLSearchParams({ page: page.toString() })
             if (filterType) params.append('type', filterType)
-            const response = await api.get(`/api/media?${params}`)
+            const response = await api.get(`/media?${params}`)
             return response.data
         },
     })
