@@ -16,7 +16,7 @@ export default function ContentList() {
     const { data: contents, isLoading } = useQuery<Content[]>({
         queryKey: ['contents'],
         queryFn: async () => {
-            const response = await api.get('/api/content')
+            const response = await api.get('/content')
             return response.data
         },
     })

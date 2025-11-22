@@ -49,7 +49,7 @@ export default function MediaLibrary() {
             if (altText) formData.append('altText', altText)
             if (description) formData.append('description', description)
 
-            const response = await api.post('/api/media/upload', formData, {
+            const response = await api.post('/media/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
             return response.data
@@ -64,7 +64,7 @@ export default function MediaLibrary() {
 
     const deleteMutation = useMutation({
         mutationFn: async (id: string) => {
-            await api.delete(`/api/media/${id}`)
+            await api.delete(`/media/${id}`)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['media'] })

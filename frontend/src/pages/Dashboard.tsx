@@ -21,7 +21,7 @@ export default function Dashboard() {
     const { data: stats } = useQuery<DashboardStats>({
         queryKey: ['dashboard-stats'],
         queryFn: async () => {
-            const response = await api.get('/api/dashboard/stats')
+            const response = await api.get('/dashboard/stats')
             return response.data
         },
     })
@@ -29,7 +29,7 @@ export default function Dashboard() {
     const { data: activities } = useQuery<RecentActivity[]>({
         queryKey: ['recent-activities'],
         queryFn: async () => {
-            const response = await api.get('/api/dashboard/recent-activities')
+            const response = await api.get('/dashboard/recent-activities')
             return response.data
         },
     })

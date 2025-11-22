@@ -34,7 +34,7 @@ export default function Editor() {
 
     const loadDocument = async (documentId: string) => {
         try {
-            const response = await api.get(`/api/content/${documentId}`)
+            const response = await api.get(`/content/${documentId}`)
             setTitle(response.data.title)
             setContent(response.data.content)
             setStatus(response.data.status)
@@ -52,13 +52,13 @@ export default function Editor() {
         setIsSaving(true)
         try {
             if (id) {
-                await api.put(`/api/content/${id}`, {
+                await api.put(`/content/${id}`, {
                     title,
                     content,
                     status,
                 })
             } else {
-                const response = await api.post('/api/content', {
+                const response = await api.post('/content', {
                     title,
                     content,
                     status,
@@ -75,7 +75,7 @@ export default function Editor() {
     const handlePublish = async () => {
         setIsSaving(true)
         try {
-            const response = await api.put(`/api/content/${id}/publish`)
+            const response = await api.put(`/content/${id}/publish`)
             setStatus(response.data.status)
             // Redirect to content list after publishing
             navigate('/content')
