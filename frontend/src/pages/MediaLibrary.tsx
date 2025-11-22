@@ -188,7 +188,7 @@ export default function MediaLibrary() {
                             <div key={item.id} className="bg-white rounded-lg shadow overflow-hidden">
                                 {item.fileType.startsWith('image/') ? (
                                     <img
-                                        src={`${import.meta.env.VITE_API_URL}${item.filePath}`}
+                                        src={`${window.location.origin}${item.filePath}`}
                                         alt={item.altText || item.fileName}
                                         className="w-full h-48 object-cover"
                                     />
@@ -207,7 +207,7 @@ export default function MediaLibrary() {
                                     <div className="mt-3 flex space-x-2">
                                         <button
                                             onClick={() => {
-                                                const url = `${import.meta.env.VITE_API_URL}${item.filePath}`;
+                                                const url = `${window.location.origin}${item.filePath}`;
                                                 
                                                 // Try modern clipboard API first
                                                 if (navigator.clipboard && navigator.clipboard.writeText) {
